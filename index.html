@@ -47,8 +47,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .pp{font-family:var(--mono);font-size:24px;font-weight:500}
 .pu{font-size:10px;color:var(--g4);margin-top:2px;font-family:var(--mono)}
 .pchg{font-family:var(--mono);font-size:11px;margin-top:3px}
-.mcv{width:100%;height:70px;margin-top:12px}
+.mcv{width:100%;height:160px;margin-top:8px}
 .mcf{display:flex;justify-content:space-between;font-size:8px;color:var(--g4);font-family:var(--mono);margin-top:3px}
+.ctb{display:flex;gap:2px;margin-top:12px}
+.ctb button{font-family:var(--mono);font-size:9px;padding:3px 8px;border:none;background:none;color:var(--g4);cursor:pointer;border-radius:2px;transition:all .15s}
+.ctb button:hover{color:var(--black)}
+.ctb button.active{background:var(--g1);color:var(--black);font-weight:500}
 .ap{border:.5px solid var(--g2);border-radius:3px;padding:12px;display:flex;gap:12px;margin-top:12px}
 .ab{flex:1}
 .al{font-size:8px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--g4);margin-bottom:5px}
@@ -123,7 +127,7 @@ footer{padding:40px 48px;border-top:.5px solid var(--g2);display:flex;justify-co
   </div>
   <div>
     <div class="pc"><div class="pl">SMM benchmark · SMM-RE-OX-001</div><div class="pp">$97.42</div><div class="pu">USD/kg · SMM assessed</div><div class="pchg up">+84% YTD</div></div>
-    <canvas class="mcv" id="c1"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
+    <div class="ctb" data-chart="c1" data-sym="NDPR"><button class="active" data-p="1m">1M</button><button data-p="7d">7D</button><button data-p="1d">1D</button><button data-p="6h">6H</button><button data-p="1h">1H</button></div><canvas class="mcv" id="c1"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
     <div class="ap">
       <div class="ab"><div class="al">Oxide (traded)</div><div class="aclr" style="background:linear-gradient(135deg,#d4d0c8,#b8b4aa)"></div><div class="adesc">Light gray to tan powder. Stable at room temperature.</div></div>
       <div class="ab"><div class="al">Metal</div><div class="aclr" style="background:linear-gradient(135deg,#c0c0c0,#808080)"></div><div class="adesc">Silvery-white. Oxidizes rapidly. Strong magnetic properties.</div></div>
@@ -142,7 +146,7 @@ footer{padding:40px 48px;border-top:.5px solid var(--g2);display:flex;justify-co
   </div>
   <div>
     <div class="pc"><div class="pl">SMM industrial · SMM-RE-OX-003</div><div class="pp">$185.30</div><div class="pu">USD/kg · SMM assessed</div><div class="pchg up">+105% YTD</div></div>
-    <canvas class="mcv" id="c2"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
+    <div class="ctb" data-chart="c2" data-sym="DY"><button class="active" data-p="1m">1M</button><button data-p="7d">7D</button><button data-p="1d">1D</button><button data-p="6h">6H</button><button data-p="1h">1H</button></div><canvas class="mcv" id="c2"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
     <div class="ap">
       <div class="ab"><div class="al">Oxide (traded)</div><div class="aclr" style="background:linear-gradient(135deg,#f0ece4,#e6e0d4)"></div><div class="adesc">White to pale yellow powder. Hygroscopic.</div></div>
       <div class="ab"><div class="al">Metal</div><div class="aclr" style="background:linear-gradient(135deg,#d0d0d0,#7a7a7a)"></div><div class="adesc">Bright silver. Soft enough to cut with a knife.</div></div>
@@ -161,7 +165,7 @@ footer{padding:40px 48px;border-top:.5px solid var(--g2);display:flex;justify-co
   </div>
   <div>
     <div class="pc"><div class="pl">SMM industrial · 4N grade</div><div class="pp">$245.39</div><div class="pu">USD/kg · SMM assessed</div><div class="pchg up">+32% YTD</div></div>
-    <canvas class="mcv" id="c3"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
+    <div class="ctb" data-chart="c3" data-sym="GA"><button class="active" data-p="1m">1M</button><button data-p="7d">7D</button><button data-p="1d">1D</button><button data-p="6h">6H</button><button data-p="1h">1H</button></div><canvas class="mcv" id="c3"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
     <div class="ap">
       <div class="ab"><div class="al">Metal (traded)</div><div class="aclr" style="background:linear-gradient(135deg,#c8ccd0,#a8acb0)"></div><div class="adesc">Silvery-blue metal. Melts at body temperature. Liquid looks like mercury.</div></div>
       <div class="ab"><div class="al">GaAs wafer</div><div class="aclr" style="background:linear-gradient(135deg,#2a2a2a,#1a1a1a)"></div><div class="adesc">Dark, mirror-finish semiconductor wafer. The processed form used in chips.</div></div>
@@ -180,7 +184,7 @@ footer{padding:40px 48px;border-top:.5px solid var(--g2);display:flex;justify-co
   </div>
   <div>
     <div class="pc"><div class="pl">SMM domestic · 5N grade</div><div class="pp">$1,949</div><div class="pu">USD/kg · SMM assessed</div><div class="pchg up">+48% YTD</div></div>
-    <canvas class="mcv" id="c4"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
+    <div class="ctb" data-chart="c4" data-sym="GE"><button class="active" data-p="1m">1M</button><button data-p="7d">7D</button><button data-p="1d">1D</button><button data-p="6h">6H</button><button data-p="1h">1H</button></div><canvas class="mcv" id="c4"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
     <div class="ap">
       <div class="ab"><div class="al">Metal (traded)</div><div class="aclr" style="background:linear-gradient(135deg,#b0b0b0,#888888)"></div><div class="adesc">Grayish-white, brittle. Looks similar to silicon. Shatters like glass.</div></div>
       <div class="ab"><div class="al">IR lens</div><div class="aclr" style="background:linear-gradient(135deg,#3a3a3a,#222222)"></div><div class="adesc">Polished dark discs. Transparent to infrared, opaque to visible light.</div></div>
@@ -199,7 +203,7 @@ footer{padding:40px 48px;border-top:.5px solid var(--g2);display:flex;justify-co
   </div>
   <div>
     <div class="pc"><div class="pl">SMM benchmark · SMM-RE-OX</div><div class="pp">$2.82</div><div class="pu">USD/kg · SMM assessed</div><div class="pchg dn">-8% YTD</div></div>
-    <canvas class="mcv" id="c5"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
+    <div class="ctb" data-chart="c5" data-sym="LA"><button class="active" data-p="1m">1M</button><button data-p="7d">7D</button><button data-p="1d">1D</button><button data-p="6h">6H</button><button data-p="1h">1H</button></div><canvas class="mcv" id="c5"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
     <div class="ap">
       <div class="ab"><div class="al">Oxide (traded)</div><div class="aclr" style="background:linear-gradient(135deg,#f5f5f0,#e8e8e0)"></div><div class="adesc">White powder. Absorbs CO2 from air. Most abundant rare earth oxide.</div></div>
       <div class="ab"><div class="al">Metal</div><div class="aclr" style="background:linear-gradient(135deg,#d8d8d8,#b0b0b0)"></div><div class="adesc">Soft, silvery-white. Tarnishes rapidly. Ductile, malleable.</div></div>
@@ -218,7 +222,7 @@ footer{padding:40px 48px;border-top:.5px solid var(--g2);display:flex;justify-co
   </div>
   <div>
     <div class="pc"><div class="pl">Fastmarkets benchmark</div><div class="pp">$33.60</div><div class="pu">USD/kg · Fastmarkets assessed</div><div class="pchg up">+5% YTD</div></div>
-    <canvas class="mcv" id="c6"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
+    <div class="ctb" data-chart="c6" data-sym="CO"><button class="active" data-p="1m">1M</button><button data-p="7d">7D</button><button data-p="1d">1D</button><button data-p="6h">6H</button><button data-p="1h">1H</button></div><canvas class="mcv" id="c6"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
     <div class="ap">
       <div class="ab"><div class="al">Metal (traded)</div><div class="aclr" style="background:linear-gradient(135deg,#8a8a9a,#5a5a6a)"></div><div class="adesc">Lustrous bluish-gray. Hard, brittle. Magnetic at room temperature.</div></div>
       <div class="ab"><div class="al">Cathode powder</div><div class="aclr" style="background:linear-gradient(135deg,#1a1a1a,#0a0a0a)"></div><div class="adesc">Black powder. Processed form used in battery manufacturing.</div></div>
@@ -237,7 +241,7 @@ footer{padding:40px 48px;border-top:.5px solid var(--g2);display:flex;justify-co
   </div>
   <div>
     <div class="pc"><div class="pl">Composite index</div><div class="pp">248.3</div><div class="pu">Weighted basket · base Jan 2026</div><div class="pchg up">+22% since inception</div></div>
-    <canvas class="mcv" id="c7"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
+    <div class="ctb" data-chart="c7" data-sym="MLT_IDX"><button class="active" data-p="1m">1M</button><button data-p="7d">7D</button><button data-p="1d">1D</button><button data-p="6h">6H</button><button data-p="1h">1H</button></div><canvas class="mcv" id="c7"></canvas><div class="mcf"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
   </div>
 </div></div>
 
@@ -346,9 +350,10 @@ var tickMap={NDPR:0,DY:1,GA:2,GE:3,LA:4,CO:5,MLT_IDX:6},tks=document.querySelect
 function updTick(prices){prices.forEach(function(p){var i=tickMap[p.symbol];if(i===undefined||!tks[i])return;var t=tks[i],pe=t.querySelector('.tp'),ce=t.querySelector('.tc');if(pe)pe.textContent=p.price>=100?'$'+p.price.toLocaleString():'$'+p.price;if(ce){ce.textContent=(p.change_pct>=0?'+':'')+p.change_pct+'%';ce.className='tc '+(p.change_pct>=0?'up':'dn')}})}
 function fetchP(){fetch(API+'/v1/prices').then(function(r){return r.json()}).then(function(d){if(d.prices)updTick(d.prices)}).catch(function(){})}
 function connectWS(){try{var ws=new WebSocket(API.replace('http','ws')+'/v1/prices/stream');ws.onmessage=function(e){var m=JSON.parse(e.data);if(m.data)updTick(Array.isArray(m.data)?m.data:[m.data])};ws.onclose=function(){setTimeout(connectWS,5000)}}catch(e){}}
-function gn(s,e,n,v){var d=[s];for(var i=1;i<n;i++){d.push(Math.max(d[i-1]+(e-s)/n+(Math.random()-.45)*v,s*.75))}d[n-1]=e;return d}
-function drawCharts(){var syms=[{id:'c1',sym:'NDPR'},{id:'c2',sym:'DY'},{id:'c3',sym:'GA'},{id:'c4',sym:'GE'},{id:'c5',sym:'LA'},{id:'c6',sym:'CO'},{id:'c7',sym:'MLT_IDX'}];syms.forEach(function(s){fetch(API+'/v1/oracle/'+s.sym+'/history').then(function(r){return r.json()}).then(function(d){if(d.data){var pr=d.data.map(function(p){return p.price});var dt=d.data.map(function(p){return p.timestamp.slice(0,10)});dl(s.id,pr,pr[pr.length-1]>=pr[0]?'#1a6b3c':'#8b2500',dt)}}).catch(function(){drawStatic()})})}
-function drawStatic(){var g='#1a6b3c',r='#8b2500';dl('c1',gn(53,97.4,70,4),g);dl('c2',gn(90,185.3,70,8),g);dl('c3',gn(186,245.4,70,6),g);dl('c4',gn(1318,1949,70,60),g);dl('c5',gn(3.06,2.82,70,.12),r);dl('c6',gn(32,33.6,70,.3),g);dl('c7',gn(200,248.3,70,5),g)}
+function gn(s,e,n,v){var d=[s];for(var i=1;i<n;i++){var trend=(e-s)/n;var noise=(Math.random()-.48)*v;var rev=(e-d[i-1])*0.01;d.push(d[i-1]+trend+noise+rev)}d[n-1]=e;return d}
+function drawCharts(){var syms=[{id:'c1',sym:'NDPR'},{id:'c2',sym:'DY'},{id:'c3',sym:'GA'},{id:'c4',sym:'GE'},{id:'c5',sym:'LA'},{id:'c6',sym:'CO'},{id:'c7',sym:'MLT_IDX'}];syms.forEach(function(s){fetch(API+'/v1/oracle/'+s.sym+'/history?period=1m').then(function(r){return r.json()}).then(function(d){if(d.data){var pr=d.data.map(function(p){return p.price});var dt=d.data.map(function(p){return p.timestamp.slice(0,10)});dl(s.id,pr,pr[pr.length-1]>=pr[0]?'#1a6b3c':'#8b2500',dt)}}).catch(function(){drawStatic()})})}
+function drawStatic(){var g='#1a6b3c',r='#8b2500';dl('c1',gn(53,97.4,90,6),g);dl('c2',gn(90,185.3,90,12),g);dl('c3',gn(186,245.4,90,8),g);dl('c4',gn(1318,1949,90,80),g);dl('c5',gn(3.06,2.82,90,.15),r);dl('c6',gn(32,33.6,90,.5),g);dl('c7',gn(200,248.3,90,7),g)}
+document.addEventListener('click',function(e){if(!e.target.matches('.ctb button'))return;var btn=e.target,bar=btn.parentElement;bar.querySelectorAll('button').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');var cid=bar.dataset.chart,sym=bar.dataset.sym,period=btn.dataset.p;fetch(API+'/v1/oracle/'+sym+'/history?period='+period).then(function(r){return r.json()}).then(function(d){if(d.data&&d.data.length>5){var pr=d.data.map(function(p){return p.price});var dt=d.data.map(function(p){return p.timestamp?p.timestamp.slice(0,16):''});dl(cid,pr,pr[pr.length-1]>=pr[0]?'#1a6b3c':'#8b2500',dt)}}).catch(function(){})});
 // Periodic table
 var HL={27:'sec-CO',31:'sec-GA',32:'sec-GE',57:'sec-LA',59:'sec-NDPR',60:'sec-NDPR',66:'sec-DY'};
 var EN={1:'Hydrogen',2:'Helium',3:'Lithium',4:'Beryllium',5:'Boron',6:'Carbon',7:'Nitrogen',8:'Oxygen',9:'Fluorine',10:'Neon',11:'Sodium',12:'Magnesium',13:'Aluminium',14:'Silicon',15:'Phosphorus',16:'Sulfur',17:'Chlorine',18:'Argon',19:'Potassium',20:'Calcium',21:'Scandium',22:'Titanium',23:'Vanadium',24:'Chromium',25:'Manganese',26:'Iron',27:'Cobalt',28:'Nickel',29:'Copper',30:'Zinc',31:'Gallium',32:'Germanium',33:'Arsenic',34:'Selenium',35:'Bromine',36:'Krypton',37:'Rubidium',38:'Strontium',39:'Yttrium',40:'Zirconium',41:'Niobium',42:'Molybdenum',43:'Technetium',44:'Ruthenium',45:'Rhodium',46:'Palladium',47:'Silver',48:'Cadmium',49:'Indium',50:'Tin',51:'Antimony',52:'Tellurium',53:'Iodine',54:'Xenon',55:'Caesium',56:'Barium',57:'Lanthanum',58:'Cerium',59:'Praseodymium',60:'Neodymium',61:'Promethium',62:'Samarium',63:'Europium',64:'Gadolinium',65:'Terbium',66:'Dysprosium',67:'Holmium',68:'Erbium',69:'Thulium',70:'Ytterbium',71:'Lutetium',72:'Hafnium',73:'Tantalum',74:'Tungsten',75:'Rhenium',76:'Osmium',77:'Iridium',78:'Platinum',79:'Gold',80:'Mercury',81:'Thallium',82:'Lead',83:'Bismuth',84:'Polonium',85:'Astatine',86:'Radon',87:'Francium',88:'Radium',89:'Actinium',90:'Thorium',91:'Protactinium',92:'Uranium',93:'Neptunium',94:'Plutonium',95:'Americium',96:'Curium',97:'Berkelium',98:'Californium',99:'Einsteinium',100:'Fermium',101:'Mendelevium',102:'Nobelium',103:'Lawrencium',104:'Rutherfordium',105:'Dubnium',106:'Seaborgium',107:'Bohrium',108:'Hassium',109:'Meitnerium',110:'Darmstadtium',111:'Roentgenium',112:'Copernicium',113:'Nihonium',114:'Flerovium',115:'Moscovium',116:'Livermorium',117:'Tennessine',118:'Oganesson'};
