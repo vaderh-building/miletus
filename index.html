@@ -261,14 +261,62 @@ footer{padding:40px 48px;border-top:.5px solid var(--g2);display:flex;justify-co
 
 <script>
 var API='http://localhost:3001';
-function dl(id,data,clr){var c=document.getElementById(id);if(!c)return;var x=c.getContext('2d'),d=devicePixelRatio||1,r=c.getBoundingClientRect();c.width=r.width*d;c.height=r.height*d;x.scale(d,d);var w=r.width,h=r.height,mn=Math.min.apply(null,data)*.97,mx=Math.max.apply(null,data)*1.02,s=w/(data.length-1);x.beginPath();data.forEach(function(v,i){var px=i*s,py=h-((v-mn)/(mx-mn))*(h-6)-3;i?x.lineTo(px,py):x.moveTo(px,py)});x.strokeStyle=clr;x.lineWidth=1.5;x.lineJoin='round';x.stroke();x.lineTo(w,h);x.lineTo(0,h);x.closePath();var g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,clr+'15');g.addColorStop(1,clr+'02');x.fillStyle=g;x.fill()}
+var chartData={};
+function dl(id,data,clr,dates){
+  var c=document.getElementById(id);if(!c)return;
+  var x=c.getContext('2d'),d=devicePixelRatio||1,r=c.getBoundingClientRect();
+  c.width=r.width*d;c.height=r.height*d;x.scale(d,d);
+  var w=r.width,h=r.height,mn=Math.min.apply(null,data)*.97,mx=Math.max.apply(null,data)*1.02,s=w/(data.length-1);
+  var pts=[];
+  x.beginPath();
+  data.forEach(function(v,i){var px=i*s,py=h-((v-mn)/(mx-mn))*(h-6)-3;i?x.lineTo(px,py):x.moveTo(px,py);pts.push({x:px,y:py,price:v,date:dates?dates[i]:''})});
+  x.strokeStyle=clr;x.lineWidth=1.5;x.lineJoin='round';x.stroke();
+  x.lineTo(w,h);x.lineTo(0,h);x.closePath();
+  var g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,clr+'15');g.addColorStop(1,clr+'02');x.fillStyle=g;x.fill();
+  chartData[id]={data:data,pts:pts,clr:clr,mn:mn,mx:mx,w:w,h:h,dates:dates||[]};
+  // Add hover handler once
+  if(!c._hover){
+    c._hover=true;
+    c.style.cursor='crosshair';
+    c.addEventListener('mousemove',function(e){
+      var rect=c.getBoundingClientRect(),mx2=e.clientX-rect.left;
+      var cd=chartData[id];if(!cd)return;
+      var closest=null,minD=Infinity;
+      cd.pts.forEach(function(p){var dist=Math.abs(p.x-mx2);if(dist<minD){minD=dist;closest=p}});
+      if(!closest)return;
+      // Redraw
+      dl(id,cd.data,cd.clr,cd.dates);
+      var ctx=c.getContext('2d'),dpr=devicePixelRatio||1;
+      ctx.save();ctx.scale(1/dpr,1/dpr);ctx.scale(dpr,dpr);
+      // Crosshair vertical line
+      ctx.beginPath();ctx.moveTo(closest.x,0);ctx.lineTo(closest.x,cd.h);
+      ctx.strokeStyle='rgba(0,0,0,0.15)';ctx.lineWidth=0.5;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+      // Dot
+      ctx.beginPath();ctx.arc(closest.x,closest.y,3,0,Math.PI*2);ctx.fillStyle=cd.clr;ctx.fill();
+      // Tooltip
+      var label='$'+closest.price.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+      ctx.font='500 11px "IBM Plex Mono",monospace';
+      var tw=ctx.measureText(label).width+12;
+      var tx=closest.x-tw/2,ty=closest.y-24;
+      if(tx<0)tx=0;if(tx+tw>cd.w)tx=cd.w-tw;if(ty<0)ty=closest.y+8;
+      ctx.fillStyle='rgba(10,10,8,0.88)';
+      ctx.beginPath();ctx.roundRect(tx,ty,tw,18,3);ctx.fill();
+      ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(label,tx+tw/2,ty+9);
+      ctx.restore();
+    });
+    c.addEventListener('mouseleave',function(){
+      var cd=chartData[id];if(cd)dl(id,cd.data,cd.clr,cd.dates);
+    });
+  }
+}
 var tickMap={NDPR:0,DY:1,GA:2,GE:3,LA:4,CO:5,MLT_IDX:6},tks=document.querySelectorAll('.tk');
 function updTick(prices){prices.forEach(function(p){var i=tickMap[p.symbol];if(i===undefined||!tks[i])return;var t=tks[i],pe=t.querySelector('.tp'),ce=t.querySelector('.tc');if(pe)pe.textContent=p.price>=100?'$'+p.price.toLocaleString():'$'+p.price;if(ce){ce.textContent=(p.change_pct>=0?'+':'')+p.change_pct+'%';ce.className='tc '+(p.change_pct>=0?'up':'dn')}})}
 function fetchP(){fetch(API+'/v1/prices').then(function(r){return r.json()}).then(function(d){if(d.prices)updTick(d.prices)}).catch(function(){})}
 function connectWS(){try{var ws=new WebSocket(API.replace('http','ws')+'/v1/prices/stream');ws.onmessage=function(e){var m=JSON.parse(e.data);if(m.data)updTick(Array.isArray(m.data)?m.data:[m.data])};ws.onclose=function(){setTimeout(connectWS,5000)}}catch(e){}}
 function gn(s,e,n,v){var d=[s];for(var i=1;i<n;i++){d.push(Math.max(d[i-1]+(e-s)/n+(Math.random()-.45)*v,s*.75))}d[n-1]=e;return d}
-function drawCharts(){var syms=[{id:'c1',sym:'NDPR'},{id:'c2',sym:'DY'},{id:'c3',sym:'GA'},{id:'c4',sym:'GE'},{id:'c5',sym:'LA'}];var loaded=0;syms.forEach(function(s){fetch(API+'/v1/oracle/'+s.sym+'/history').then(function(r){return r.json()}).then(function(d){if(d.data){var pr=d.data.map(function(p){return p.price});dl(s.id,pr,pr[pr.length-1]>=pr[0]?'#1a6b3c':'#8b2500')}}).catch(function(){drawStatic()})})}
-function drawStatic(){dl('c1',gn(53,97.4,70,4),'#1a6b3c');dl('c2',gn(90,185.3,70,8),'#1a6b3c');dl('c3',gn(186,245.4,70,6),'#1a6b3c');dl('c4',gn(1318,1949,70,60),'#1a6b3c');dl('c5',gn(3.06,2.82,70,.12),'#8b2500')}
+function drawCharts(){var syms=[{id:'c1',sym:'NDPR'},{id:'c2',sym:'DY'},{id:'c3',sym:'GA'},{id:'c4',sym:'GE'},{id:'c5',sym:'LA'}];syms.forEach(function(s){fetch(API+'/v1/oracle/'+s.sym+'/history').then(function(r){return r.json()}).then(function(d){if(d.data){var pr=d.data.map(function(p){return p.price});var dt=d.data.map(function(p){return p.timestamp.slice(0,10)});dl(s.id,pr,pr[pr.length-1]>=pr[0]?'#1a6b3c':'#8b2500',dt)}}).catch(function(){drawStatic()})})}
+function drawStatic(){var g='#1a6b3c',r='#8b2500';dl('c1',gn(53,97.4,70,4),g);dl('c2',gn(90,185.3,70,8),g);dl('c3',gn(186,245.4,70,6),g);dl('c4',gn(1318,1949,70,60),g);dl('c5',gn(3.06,2.82,70,.12),r)}
 // Periodic table
 var HL={27:'markets',31:'sec-GA',32:'sec-GE',57:'sec-LA',59:'sec-NDPR',60:'sec-NDPR',66:'sec-DY'};
 var EN={1:'Hydrogen',2:'Helium',3:'Lithium',4:'Beryllium',5:'Boron',6:'Carbon',7:'Nitrogen',8:'Oxygen',9:'Fluorine',10:'Neon',11:'Sodium',12:'Magnesium',13:'Aluminium',14:'Silicon',15:'Phosphorus',16:'Sulfur',17:'Chlorine',18:'Argon',19:'Potassium',20:'Calcium',21:'Scandium',22:'Titanium',23:'Vanadium',24:'Chromium',25:'Manganese',26:'Iron',27:'Cobalt',28:'Nickel',29:'Copper',30:'Zinc',31:'Gallium',32:'Germanium',33:'Arsenic',34:'Selenium',35:'Bromine',36:'Krypton',37:'Rubidium',38:'Strontium',39:'Yttrium',40:'Zirconium',41:'Niobium',42:'Molybdenum',43:'Technetium',44:'Ruthenium',45:'Rhodium',46:'Palladium',47:'Silver',48:'Cadmium',49:'Indium',50:'Tin',51:'Antimony',52:'Tellurium',53:'Iodine',54:'Xenon',55:'Caesium',56:'Barium',57:'Lanthanum',58:'Cerium',59:'Praseodymium',60:'Neodymium',61:'Promethium',62:'Samarium',63:'Europium',64:'Gadolinium',65:'Terbium',66:'Dysprosium',67:'Holmium',68:'Erbium',69:'Thulium',70:'Ytterbium',71:'Lutetium',72:'Hafnium',73:'Tantalum',74:'Tungsten',75:'Rhenium',76:'Osmium',77:'Iridium',78:'Platinum',79:'Gold',80:'Mercury',81:'Thallium',82:'Lead',83:'Bismuth',84:'Polonium',85:'Astatine',86:'Radon',87:'Francium',88:'Radium',89:'Actinium',90:'Thorium',91:'Protactinium',92:'Uranium',93:'Neptunium',94:'Plutonium',95:'Americium',96:'Curium',97:'Berkelium',98:'Californium',99:'Einsteinium',100:'Fermium',101:'Mendelevium',102:'Nobelium',103:'Lawrencium',104:'Rutherfordium',105:'Dubnium',106:'Seaborgium',107:'Bohrium',108:'Hassium',109:'Meitnerium',110:'Darmstadtium',111:'Roentgenium',112:'Copernicium',113:'Nihonium',114:'Flerovium',115:'Moscovium',116:'Livermorium',117:'Tennessine',118:'Oganesson'};
